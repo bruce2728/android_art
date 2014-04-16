@@ -940,6 +940,22 @@ void Heap::SetTargetHeapUtilization(float target) {
   target_utilization_ = target;
 }
 
+void Heap::SetTargetHeapMinFree(size_t size) {
+  min_free_ = size;
+}
+
+#define CONCURRENT_START_DEFAULT (128 << 10)
+
+static unsigned int concurrentStart = CONCURRENT_START_DEFAULT;
+ 
+/* The next GC will not be concurrent when free memory after a GC is
+ * under this many bytes.
+ */
+
+void Heap::SetTargetHeapConcurrentStart(size_t size) {
+    concurrentStart = size;
+}
+
 size_t Heap::GetObjectsAllocated() const {
   size_t total = 0;
   typedef std::vector<space::ContinuousSpace*>::const_iterator It;
